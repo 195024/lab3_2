@@ -31,6 +31,7 @@ import static org.hamcrest.CoreMatchers.*;
 public class TNewsLoader {
 
 	private ConfigurationLoader configLoader = null;
+	private NewsLoader newsLoader;
 
 	@Before
 	public void setup() {
@@ -41,6 +42,8 @@ public class TNewsLoader {
 		NewsReader newsReader = PowerMockito.mock(FileNewsReader.class);
 		PowerMockito.mockStatic(NewsReaderFactory.class);
 		IncomingNews incomingNews = new IncomingNews();
+
+		newsLoader = new NewsLoader();
 
 		Whitebox.setInternalState(config, "readerType", "tReader");
 
@@ -53,15 +56,14 @@ public class TNewsLoader {
 		when(configLoader.loadConfiguration()).thenReturn(config);
 		when(newsReader.read()).thenReturn(incomingNews);
 		when(NewsReaderFactory.getReader("tReader")).thenReturn(newsReader);
+
 	}
 
 	@Test
-	public void checkIfNewsSizesAreCorrect() {
-		NewsLoader newsLoader = new NewsLoader();
+	public void checkIfNewSizesAreCorrect() {
 		PublishableNews publishableNews = newsLoader.loadNews();
 
 		assertThat(publishableNews.getPublicContent().size(), is(equalTo(2)));
 		assertThat(publishableNews.getSubscribentContent().size(), is(equalTo(2)));
 	}
-
 }

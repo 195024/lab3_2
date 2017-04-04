@@ -21,6 +21,8 @@ import edu.iis.mto.staticmock.reader.FileNewsReader;
 import edu.iis.mto.staticmock.reader.NewsReader;
 
 import static org.powermock.api.mockito.PowerMockito.*;
+
+import org.mockito.Mockito;
 import org.mockito.internal.util.reflection.*;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -66,7 +68,7 @@ public class TNewsLoader {
 		assertThat(publishableNews.getPublicContent().size(), is(equalTo(2)));
 		assertThat(publishableNews.getSubscribentContent().size(), is(equalTo(2)));
 	}
-	
+
 	@Test
 	public void checkIfPublicContentIsCorrect() {
 		PublishableNews publishableNews = newsLoader.loadNews();
@@ -74,12 +76,21 @@ public class TNewsLoader {
 		assertThat(publishableNews.getPublicContent().get(0), is(equalTo("pub1")));
 		assertThat(publishableNews.getPublicContent().get(1), is(equalTo("pub2")));
 	}
-	
+
 	@Test
 	public void checkIfSubscribentContentIsCorrect() {
 		PublishableNews publishableNews = newsLoader.loadNews();
 
 		assertThat(publishableNews.getSubscribentContent().get(0), is(equalTo("sub1")));
 		assertThat(publishableNews.getSubscribentContent().get(1), is(equalTo("sub2")));
+	}
+
+	@Test
+	public void getReaderMethodIsCalledOnce() {
+		newsLoader.loadNews();
+
+		NewsReaderFactory.getReader("tReader");
+
+		verifyStatic(Mockito.times(1));
 	}
 }

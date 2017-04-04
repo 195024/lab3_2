@@ -66,4 +66,12 @@ public class TNewsLoader {
 		assertThat(publishableNews.getPublicContent().size(), is(equalTo(2)));
 		assertThat(publishableNews.getSubscribentContent().size(), is(equalTo(2)));
 	}
+	
+	@Test
+	public void checkIfPublicContentIsCorrect() {
+		PublishableNews publishableNews = newsLoader.loadNews();
+
+		assertThat(publishableNews.getPublicContent().get(0), is(equalTo("pub1")));
+		assertThat(publishableNews.getPublicContent().get(1), is(equalTo("pub2")));
+	}
 }
